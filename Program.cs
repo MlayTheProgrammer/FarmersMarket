@@ -9,7 +9,7 @@ namespace Farmers_MarketTemp
 {
     class Farmer : IFarmer
     {
-        
+        static Dictionary<string, string> mydictionary = new Dictionary<string, string>();
         public string Name { get; set; }
         public string Food { get; set; }
         
@@ -50,6 +50,8 @@ namespace Farmers_MarketTemp
             foodName = Console.ReadLine();
             Farmer user = new Farmer(userName);    
             listFood.Add(foodName);
+            
+            mydictionary.Add(userName, foodName);
             user.fruitsAndVeggies(foodName);
             while (!exit)
             {
@@ -57,14 +59,19 @@ namespace Farmers_MarketTemp
                 string read = Console.ReadLine();
                 if (read == "check")
                 {
-                  
+
                     Console.WriteLine("\nWhat user? :");
                     string temp = Console.ReadLine();
-                    check(listName, temp, user.Food);
+                    check(temp);
+
                 }
-                
+
                 else if (read == "buy")
-                    buy();
+                {
+                    Console.WriteLine("Who do you want to buy from? ");
+                    string read2 = Console.ReadLine();
+                    buy(read2);
+                }
                     Console.WriteLine("Is that it? ");
                     string next2 = Console.ReadLine();
                     exit = (next2 == "Y");
@@ -73,36 +80,38 @@ namespace Farmers_MarketTemp
         }
             
         //what I am trying to fix
-        static void check(List<string> users, string temp, string foodName) 
+        static void check(string temp) 
         {
 
-            if (users.Contains(temp))
+            Farmer user = new Farmer(temp);
+            if (user.Name == temp)
             {
-                Farmer user = new Farmer(temp);
-                
-                Console.WriteLine(user.Name + " the food name " + foodName);
+               
+                Console.WriteLine(mydictionary[user.Name]);
                 
             }
-            else if (!users.Contains(temp)) 
+            else if (user.Name != temp) 
             {
                 Console.WriteLine("This user is not here ");
             }
           
         }
         //Ignore this, will fix this later
-        static void buy()
+        static void buy(string name)
         {
-            
-            Console.WriteLine("What farmer do you want to buy from? ");
-            String from = Console.ReadLine();
-            
-            Console.WriteLine($"\nWhat do you want to buy? {foodName} :");
+
+            //   Console.WriteLine("What farmer do you want to buy from? ");
+            // String from = Console.ReadLine();
+            Farmer user = new Farmer(name);
+            Console.WriteLine($"\nWhat do you want to buy?  :");
             String temp = Console.ReadLine();
-            Farmer user = new Farmer(userName);
-          /*  if (temp == user.fruitsAndVeggies(foodName))
+            
+            if (mydictionary.ContainsKey(name))
             {
-                food.Remove(user.fruitsAndVeggies(foodName));
-            }*/
+                //listfood.Remove(user.fruitsAndVeggies(temp));
+                mydictionary.Remove(name);
+            }
+            mydictionary.Add(name, "");
             Console.ReadKey();
 
         }
